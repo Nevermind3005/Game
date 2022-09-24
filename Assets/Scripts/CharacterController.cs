@@ -8,34 +8,31 @@ public class CharacterController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5;
     [SerializeField] private float jumpForce = 15;
+    [Range(0, 0.3f)] [SerializeField] private float movementSmoothing = 0.05f;
+    [SerializeField] LayerMask groundLayer;
     [SerializeField] private float jumpFallGravity = 3.5f;
-    [SerializeField] private Transform groundCheckPoint;
+    [SerializeField] private Transform groundCheckPos;
 
     private bool isGrounded = true;
     private Rigidbody2D rb;
     private float horizontalInput;
+    private float groundCheckRadius = 0.2f;
     
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate()
     {
         isGrounded = false;
-        RaycastHit2D groundHit =
-            Physics2D.BoxCast(groundCheckPoint.position, new Vector2(1f, 0.01f), 0, Vector2.down, 0.01f);
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        if (groundHit.collider is not null)
+
+        //Check if player is on the ground
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheckPos.position, groundCheckRadius, groundLayer);
+        for (int i = 0; i < colliders.Length; i++)
         {
-            if (groundHit.collider.tag == "Ground")
+            if (colliders[i].gameObject != gameObject)
             {
                 isGrounded = true;
             }
@@ -63,9 +60,10 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawCube(groundCheckPoint.position, new Vector2(1f, 0.01f));
+        //Draw ground check
+        Gizmos.DrawSphere(groundCheckPos.position, groundCheckRadius);
     }
 }
