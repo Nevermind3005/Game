@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CharacterController : MonoBehaviour
 {
@@ -17,16 +18,20 @@ public class CharacterController : MonoBehaviour
     private Rigidbody2D rb;
     private float horizontalInput;
     private float groundCheckRadius = 0.2f;
+    private PlayerInputActions playerInputActions;
     
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.Player.Enable();
     }
+
 
     void FixedUpdate()
     {
         isGrounded = false;
-        horizontalInput = Input.GetAxisRaw("Horizontal");
+        horizontalInput = playerInputActions.Player.Move.ReadValue<float>();
 
         //Check if player is on the ground
         Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheckPos.position, groundCheckRadius, groundLayer);
@@ -38,7 +43,7 @@ public class CharacterController : MonoBehaviour
             }
         }
         
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (playerInputActions.Player.Sprint.IsPressed())
         {
             moveSpeed = 10f;
         }
@@ -49,7 +54,7 @@ public class CharacterController : MonoBehaviour
 
         rb.velocity = new Vector2( horizontalInput * moveSpeed, rb.velocity.y);
 
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
+        if (playerInputActions.Player.Jump.IsPressed() && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
