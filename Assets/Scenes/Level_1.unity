@@ -753,13 +753,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f1a4205006e4bfba99b5c8208c2e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 15
-  movementSmoothing: 0.5
+  moveSpeed: 7
+  acceleration: 7
+  decceleration: 7
+  velPower: 0.9
+  friction: 0.2
+  jumpForce: 7.5
+  jumpFallGravity: 1.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  jumpFallGravity: 3.5
   groundCheckPos: {fileID: 1756545652}
 --- !u!70 &807731661
 CapsuleCollider2D:
