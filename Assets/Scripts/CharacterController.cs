@@ -21,6 +21,7 @@ public class CharacterController : MonoBehaviour
     [Header("Dashing")]
     [SerializeField] private float dashVelocity = 10f;
     [SerializeField] private float dashTime = 0.5f;
+    [SerializeField] private TrailRenderer trailRenderer;
 
     [Header("Ground Check")]
     [SerializeField] LayerMask groundLayer;
@@ -28,8 +29,9 @@ public class CharacterController : MonoBehaviour
 
 
     private Rigidbody2D rb;
-    private float normalgravity;
-
+    private float normalGravity;
+    private bool facingRight = true;
+    
     //Input
     private PlayerInputActions playerInputActions;
     private float horizontalInput;
@@ -49,10 +51,9 @@ public class CharacterController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
-        normalgravity = rb.gravityScale;
+        normalGravity = rb.gravityScale;
     }
-
-
+    
     void FixedUpdate()
     {
         isGrounded = false;
@@ -61,11 +62,8 @@ public class CharacterController : MonoBehaviour
         horizontalInput = playerInputActions.Player.Move.ReadValue<float>();
 
         float targetSpeed = horizontalInput * moveSpeed;
-
         float speedDif = targetSpeed - rb.velocity.x;
-
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
-
         float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
 
         //Check if player is on the ground
@@ -78,6 +76,16 @@ public class CharacterController : MonoBehaviour
             }
         }
 
+        if (horizontalInput > 0 && !facingRight)
+        {
+            flip();
+        }
+
+        if (horizontalInput < 0 && facingRight)
+        {
+            flip();
+        }
+
         if (playerInputActions.Player.Dash.IsPressed() && canDash)
         {
             isDashing = true;
@@ -87,16 +95,20 @@ public class CharacterController : MonoBehaviour
             {
                 dashDirection = new Vector2(transform.localScale.x, 0f);
             }
+            rb.gravityScale = 0;
+            rb.velocity = Vector2.zero;
+            rb.AddForce(dashDirection.normalized * dashVelocity, ForceMode2D.Impulse);
+            trailRenderer.emitting = true;
             StartCoroutine(StopDashing());
         }
 
         if (isDashing)
         {
-            rb.velocity = dashDirection.normalized * dashVelocity;
+            //rb.velocity = dashDirection.normalized * dashVelocity;
             return;
         }
 
-        if (isGrounded == true)
+        if (isGrounded)
         {
             canDash = true;
         }
@@ -118,20 +130,28 @@ public class CharacterController : MonoBehaviour
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
-
         //Set higher scale of gravity if player is falling
         if (rb.velocity.y < 0) {
             rb.gravityScale = jumpFallGravity;
         } else
         {
-            rb.gravityScale = normalgravity;
+            rb.gravityScale = normalGravity;
         }
     }
 
+    private void flip()
+    {
+        facingRight = !facingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
+    }
+    
     private IEnumerator StopDashing()
     {
         yield return new WaitForSeconds(dashTime);
         isDashing = false;
+        trailRenderer.emitting = false;
     }
 
     
