@@ -4,16 +4,18 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class CharacterController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 7;
     [SerializeField] private float acceleration = 7f;
-    [SerializeField] private float decceleration = 7f;
+    [SerializeField] private float deceleration = 7f;
     [SerializeField] private float velPower = 0.9f;
     [SerializeField] private float friction = 0.2f;
-
+    [SerializeField] private ParticleSystem dustParticle;
+    
     [Header("Jumping")]
     [SerializeField] private float jumpForce = 7.5f;
     [SerializeField] private float jumpFallGravity = 1.5f;
@@ -21,7 +23,7 @@ public class CharacterController : MonoBehaviour
     [Header("Dashing")]
     [SerializeField] private float dashVelocity = 10f;
     [SerializeField] private float dashTime = 0.5f;
-    [SerializeField] private TrailRenderer trailRenderer;
+    //[SerializeField] private TrailRenderer trailRenderer;
 
     [Header("Ground Check")]
     [SerializeField] LayerMask groundLayer;
@@ -42,7 +44,6 @@ public class CharacterController : MonoBehaviour
     private bool canDash = true;
 
     //Ground check
-    private float groundCheckRadius = 0.01f;
     private bool isGrounded = true;
 
     //Init
@@ -63,7 +64,7 @@ public class CharacterController : MonoBehaviour
 
         float targetSpeed = horizontalInput * moveSpeed;
         float speedDif = targetSpeed - rb.velocity.x;
-        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
+        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
         float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
 
         //Check if player is on the ground
@@ -79,11 +80,20 @@ public class CharacterController : MonoBehaviour
         if (horizontalInput > 0 && !facingRight)
         {
             flip();
+            if (Mathf.Abs(rb.velocity.x) > 5.5f) 
+            {
+                ShowDustParticle();
+            }
         }
-
+        
+        
         if (horizontalInput < 0 && facingRight)
         {
             flip();
+            if (Mathf.Abs(rb.velocity.x) > 5.5f) 
+            {
+                ShowDustParticle();
+            }
         }
 
         if (playerInputActions.Player.Dash.IsPressed() && canDash)
@@ -98,7 +108,7 @@ public class CharacterController : MonoBehaviour
             rb.gravityScale = 0;
             rb.velocity = Vector2.zero;
             rb.AddForce(dashDirection.normalized * dashVelocity, ForceMode2D.Impulse);
-            trailRenderer.emitting = true;
+            //trailRenderer.emitting = true;
             StartCoroutine(StopDashing());
         }
 
@@ -151,9 +161,13 @@ public class CharacterController : MonoBehaviour
     {
         yield return new WaitForSeconds(dashTime);
         isDashing = false;
-        trailRenderer.emitting = false;
+        //trailRenderer.emitting = false;
     }
 
+    private void ShowDustParticle()
+    {
+        dustParticle.Play();
+    }
     
     //Debug gizmos
     private void OnDrawGizmos()
