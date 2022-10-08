@@ -15,7 +15,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float velPower = 0.9f;
     [SerializeField] private float friction = 0.2f;
     [SerializeField] private ParticleSystem dustParticle;
-    
+
     [Header("Jumping")]
     [SerializeField] private float jumpForce = 7.5f;
     [SerializeField] private float jumpFallGravity = 1.5f;
@@ -33,14 +33,14 @@ public class CharacterController : MonoBehaviour
     private Rigidbody2D rb;
     private float normalGravity;
     private bool facingRight = true;
-    
+
     //Input
     private PlayerInputActions playerInputActions;
     private float horizontalInput;
 
     //Dash
     private Vector2 dashDirection;
-    private bool isDashing;
+    [HideInInspector] public bool isDashing;
     private bool canDash = true;
 
     //Ground check
@@ -71,12 +71,13 @@ public class CharacterController : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheckPos.position, new Vector2(0.5f, 0.01f), 0); ;
         for (int i = 0; i < colliders.Length; i++)
         {
-            if (colliders[i].gameObject != gameObject)
+            if (colliders[i].gameObject != gameObject && (groundLayer & (1 << colliders[i].gameObject.layer)) != 0)
             {
                 isGrounded = true;
             }
         }
 
+        //Flip player
         if (horizontalInput > 0 && !facingRight)
         {
             flip();
@@ -86,7 +87,7 @@ public class CharacterController : MonoBehaviour
             }
         }
         
-        
+        //Flip player
         if (horizontalInput < 0 && facingRight)
         {
             flip();
@@ -96,31 +97,38 @@ public class CharacterController : MonoBehaviour
             }
         }
 
+        //Dash
         if (playerInputActions.Player.Dash.IsPressed() && canDash)
         {
             isDashing = true;
             canDash = false;
-            dashDirection = new Vector2(horizontalInput, 0f);
-            if (dashDirection.x == 0)
+            switch (facingRight)
             {
-                dashDirection = new Vector2(transform.localScale.x, 0f);
+                case true:
+                    dashDirection = new Vector2(1f, 0f);
+                    break;
+                case false:
+                    dashDirection = new Vector2(-1f, 0f);
+                    break;
             }
+           
             rb.gravityScale = 0;
             rb.velocity = Vector2.zero;
             rb.AddForce(dashDirection.normalized * dashVelocity, ForceMode2D.Impulse);
-            //trailRenderer.emitting = true;
             StartCoroutine(StopDashing());
         }
 
         if (isDashing)
         {
-            //rb.velocity = dashDirection.normalized * dashVelocity;
             return;
         }
 
         if (isGrounded)
         {
-            canDash = true;
+            if (!playerInputActions.Player.Dash.IsPressed())
+            {
+                canDash = true;
+            }
         }
 
         //Move player
@@ -152,16 +160,14 @@ public class CharacterController : MonoBehaviour
     private void flip()
     {
         facingRight = !facingRight;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
+
+        transform.Rotate(0f, 180f, 0f);
     }
     
     private IEnumerator StopDashing()
     {
         yield return new WaitForSeconds(dashTime);
         isDashing = false;
-        //trailRenderer.emitting = false;
     }
 
     private void ShowDustParticle()
