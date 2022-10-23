@@ -1,20 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
-    private void DemagePlayer()
+    private void DamagePlayer()
     {
         GameManager.gameManager.playerHealth.Demage(1);
     }
