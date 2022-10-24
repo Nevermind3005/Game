@@ -5057,7 +5057,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoint: {fileID: 5874127477784654018}
   bulletPrefab: {fileID: 526069637818574879, guid: 9fc11e92f52b4a547982e59ce6628be7, type: 3}
-  shootingDelay: 0.2
+  shootingDelay: 0.3
 --- !u!114 &5874127478069912187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5070,3 +5070,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 854ad568d12324534a93c5f442cad4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinCounter: {fileID: 0}
