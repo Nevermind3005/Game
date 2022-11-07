@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Bullet : MonoBehaviour
 {
 
     [SerializeField] private float speed = 15f;
-    [SerializeField] private float destroyDistance = 10f;
+    [FormerlySerializedAs("destroyDistance")] [SerializeField] private float travelDistance = 10f;
     private Transform firePointPosition;
 
     private Rigidbody2D rb;
@@ -25,7 +26,7 @@ public class Bullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Vector2.Distance(transform.position, firePointPosition.position) > destroyDistance)
+        if (Vector2.Distance(transform.position, firePointPosition.position) > travelDistance)
         {
             Destroy(gameObject);
         }
