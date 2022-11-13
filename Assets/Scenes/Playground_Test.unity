@@ -1981,6 +1981,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5874127477651109932, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.119
+      objectReference: {fileID: 0}
+    - target: {fileID: 5874127477784654018, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.473
+      objectReference: {fileID: 0}
+    - target: {fileID: 5874127477784654018, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.116
+      objectReference: {fileID: 0}
+    - target: {fileID: 5874127477893208823, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.435
+      objectReference: {fileID: 0}
     - target: {fileID: 5874127478069912187, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
       propertyPath: coinCount
       value: 
@@ -1993,9 +2009,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5874127479120509842, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 57c39a4b4ee9e41409f148101a891d63, type: 3}
+    - target: {fileID: 5874127479120509842, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5874127479120509842, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5874127479120509842, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5874127479120509843, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5874127479120509843, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 5874127479120509843, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
       propertyPath: m_LocalPosition.x
