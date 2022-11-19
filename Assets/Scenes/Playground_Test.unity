@@ -1145,6 +1145,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinValue: 0
+--- !u!1 &1303052403 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5874127479120509841, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+  m_PrefabInstance: {fileID: 5874127479390845528}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1303052404
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303052403}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a4c9f3f045c942dbb7ab272395ba218, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1326605367
 GameObject:
   m_ObjectHideFlags: 0
@@ -2010,9 +2035,17 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5874127479120509842, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5874127479120509842, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5874127479120509842, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 57c39a4b4ee9e41409f148101a891d63, type: 3}
+      objectReference: {fileID: 21300000, guid: d3d0315bb6bce4636b447f5fec39cf56, type: 3}
     - target: {fileID: 5874127479120509842, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -2023,6 +2056,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5874127479120509842, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
       propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5874127479120509842, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5874127479120509843, guid: f9fcec6eb8fb24ee489a7c1315f3e36c, type: 3}

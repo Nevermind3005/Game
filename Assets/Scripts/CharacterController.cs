@@ -1,10 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class CharacterController : MonoBehaviour
 {
@@ -46,10 +41,15 @@ public class CharacterController : MonoBehaviour
     //Ground check
     private bool isGrounded = true;
 
+    private bool canJump = true;
+
+    private Animator animator;
+
     //Init
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
         normalGravity = rb.gravityScale;
@@ -134,6 +134,8 @@ public class CharacterController : MonoBehaviour
         //Move player
         rb.AddForce(movement * Vector2.right);
 
+        SetWalkAnimation();
+
         if (isGrounded && Mathf.Abs(horizontalInput) < 0.01f)
         {
             float amount = Mathf.Min(Mathf.Abs(rb.velocity.x), Mathf.Abs(friction));
@@ -144,16 +146,35 @@ public class CharacterController : MonoBehaviour
         }
 
         //Jump
-        if (playerInputActions.Player.Jump.IsPressed() && isGrounded)
+        if (playerInputActions.Player.Jump.IsPressed() && isGrounded && canJump)
         {
+            canJump = false;
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
+
+        if (!playerInputActions.Player.Jump.IsPressed() && isGrounded)
+        {
+            canJump = true;
+        }
+        
         //Set higher scale of gravity if player is falling
         if (rb.velocity.y < 0) {
             rb.gravityScale = jumpFallGravity;
         } else
         {
             rb.gravityScale = normalGravity;
+        }
+    }
+
+    private void SetWalkAnimation()
+    {
+        if ((horizontalInput > 0.0f || horizontalInput < 0.0f) && isGrounded)
+        {
+            animator.SetBool("walking", true);
+        }
+        else
+        {
+            animator.SetBool("walking", false);
         }
     }
 
