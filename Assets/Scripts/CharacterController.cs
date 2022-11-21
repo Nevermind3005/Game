@@ -68,7 +68,7 @@ public class CharacterController : MonoBehaviour
         float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
 
         //Check if player is on the ground
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheckPos.position, new Vector2(0.5f, 0.01f), 0); ;
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheckPos.position, new Vector2(0.5f, 0.05f), 0); ;
         for (int i = 0; i < colliders.Length; i++)
         {
             if (colliders[i].gameObject != gameObject && (groundLayer & (1 << colliders[i].gameObject.layer)) != 0)
@@ -150,11 +150,13 @@ public class CharacterController : MonoBehaviour
         {
             canJump = false;
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            animator.SetBool("jumping", true);
         }
 
         if (!playerInputActions.Player.Jump.IsPressed() && isGrounded)
         {
             canJump = true;
+            animator.SetBool("jumping", false);
         }
         
         //Set higher scale of gravity if player is falling
@@ -201,6 +203,6 @@ public class CharacterController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         //Draw ground check
-        Gizmos.DrawCube(groundCheckPos.position, new Vector2(0.5f, 0.01f));
+        Gizmos.DrawCube(groundCheckPos.position, new Vector2(0.5f, 0.05f));
     }
 }
