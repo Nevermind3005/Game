@@ -193,6 +193,13 @@ public class CharacterController : MonoBehaviour
         isDashing = false;
     }
 
+    private IEnumerator EnablePlayerControls(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        playerInputActions.Player.Enable();
+        playerInputActions.Weapon.Enable();
+    }
+
     private void ShowDustParticle()
     {
         dustParticle.Play();
@@ -204,5 +211,18 @@ public class CharacterController : MonoBehaviour
         Gizmos.color = Color.red;
         //Draw ground check
         Gizmos.DrawCube(groundCheckPos.position, new Vector2(0.5f, 0.05f));
+    }
+
+    //TODO add counter to enable controls
+    public void DisablePlayerControls(float waitTime)
+    {
+        playerInputActions.Player.Disable();
+        playerInputActions.Weapon.Disable();
+        StartCoroutine(EnablePlayerControls(waitTime));
+    }
+
+    public void DisableCollider()
+    {
+        
     }
 }

@@ -37,6 +37,10 @@ public class Bullet : MonoBehaviour
         if (col.tag == "Platform" || col.tag == "Enemy")
         {
             Destroy(gameObject);
+            if (col.tag == "Enemy")
+            {
+                col.gameObject.GetComponent<EnemyController>().health.Demage(1);
+            }
         }
     }
 }
