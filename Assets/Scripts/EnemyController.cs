@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -43,7 +39,7 @@ public class EnemyController : MonoBehaviour
                 }
             }
 
-            rb.velocity = new Vector2(moveSpeed * direction, rb.velocity.y);
+        rb.velocity = new Vector2(moveSpeed * direction, rb.velocity.y);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -58,7 +54,7 @@ public class EnemyController : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
-            GameManager.gameManager.playerHealth.Demage(1);
+            col.gameObject.GetComponent<PlayerBehaviour>().DamagePlayer();
             var dir = col.gameObject.GetComponent<Transform>().rotation.y < 0 ? 1 : -1;
             col.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2( dir * 22, 7), ForceMode2D.Impulse);
             col.gameObject.GetComponent<CharacterController>().DisablePlayerControls(0.3f);

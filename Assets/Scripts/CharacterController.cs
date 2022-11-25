@@ -162,7 +162,8 @@ public class CharacterController : MonoBehaviour
         //Set higher scale of gravity if player is falling
         if (rb.velocity.y < 0) {
             rb.gravityScale = jumpFallGravity;
-        } else
+        } 
+        else
         {
             rb.gravityScale = normalGravity;
         }
@@ -213,7 +214,6 @@ public class CharacterController : MonoBehaviour
         Gizmos.DrawCube(groundCheckPos.position, new Vector2(0.5f, 0.05f));
     }
 
-    //TODO add counter to enable controls
     public void DisablePlayerControls(float waitTime)
     {
         playerInputActions.Player.Disable();
