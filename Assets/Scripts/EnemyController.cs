@@ -58,6 +58,7 @@ public class EnemyController : MonoBehaviour
             var dir = col.gameObject.GetComponent<Transform>().rotation.y < 0 ? 1 : -1;
             col.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2( dir * 22, 7), ForceMode2D.Impulse);
             col.gameObject.GetComponent<CharacterController>().DisablePlayerControls(0.3f);
+            col.gameObject.GetComponent<PlayerBehaviour>().DisableEnemyCollision();
         }
     }
 }
