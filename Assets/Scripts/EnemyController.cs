@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class EnemyController : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float moveSpeed = 1;
     [SerializeField] private float direction = 1;
     [SerializeField] private Transform wallCheckPoint;
+    [SerializeField] private Light2D headLight;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -23,6 +25,7 @@ public class EnemyController : MonoBehaviour
         if (health.CurrentHealth == 0)
         {
             animator.SetBool("death", true);
+            headLight.intensity = 0;
         }
     }
 
