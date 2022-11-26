@@ -1,10 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class CharacterController : MonoBehaviour
 {
@@ -46,10 +41,15 @@ public class CharacterController : MonoBehaviour
     //Ground check
     private bool isGrounded = true;
 
+    private bool canJump = true;
+
+    private Animator animator;
+
     //Init
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
         normalGravity = rb.gravityScale;
@@ -68,7 +68,7 @@ public class CharacterController : MonoBehaviour
         float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
 
         //Check if player is on the ground
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheckPos.position, new Vector2(0.5f, 0.01f), 0); ;
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheckPos.position, new Vector2(0.5f, 0.05f), 0); ;
         for (int i = 0; i < colliders.Length; i++)
         {
             if (colliders[i].gameObject != gameObject && (groundLayer & (1 << colliders[i].gameObject.layer)) != 0)
@@ -134,6 +134,8 @@ public class CharacterController : MonoBehaviour
         //Move player
         rb.AddForce(movement * Vector2.right);
 
+        SetWalkAnimation();
+
         if (isGrounded && Mathf.Abs(horizontalInput) < 0.01f)
         {
             float amount = Mathf.Min(Mathf.Abs(rb.velocity.x), Mathf.Abs(friction));
@@ -144,16 +146,38 @@ public class CharacterController : MonoBehaviour
         }
 
         //Jump
-        if (playerInputActions.Player.Jump.IsPressed() && isGrounded)
+        if (playerInputActions.Player.Jump.IsPressed() && isGrounded && canJump)
         {
+            canJump = false;
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            animator.SetBool("jumping", true);
         }
+
+        if (!playerInputActions.Player.Jump.IsPressed() && isGrounded)
+        {
+            canJump = true;
+            animator.SetBool("jumping", false);
+        }
+        
         //Set higher scale of gravity if player is falling
         if (rb.velocity.y < 0) {
             rb.gravityScale = jumpFallGravity;
-        } else
+        } 
+        else
         {
             rb.gravityScale = normalGravity;
+        }
+    }
+
+    private void SetWalkAnimation()
+    {
+        if ((horizontalInput > 0.0f || horizontalInput < 0.0f) && isGrounded)
+        {
+            animator.SetBool("walking", true);
+        }
+        else
+        {
+            animator.SetBool("walking", false);
         }
     }
 
@@ -170,6 +194,13 @@ public class CharacterController : MonoBehaviour
         isDashing = false;
     }
 
+    private IEnumerator EnablePlayerControls(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        playerInputActions.Player.Enable();
+        playerInputActions.Weapon.Enable();
+    }
+
     private void ShowDustParticle()
     {
         dustParticle.Play();
@@ -180,6 +211,18 @@ public class CharacterController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         //Draw ground check
-        Gizmos.DrawCube(groundCheckPos.position, new Vector2(0.5f, 0.01f));
+        Gizmos.DrawCube(groundCheckPos.position, new Vector2(0.5f, 0.05f));
+    }
+
+    public void DisablePlayerControls(float waitTime)
+    {
+        playerInputActions.Player.Disable();
+        playerInputActions.Weapon.Disable();
+        StartCoroutine(EnablePlayerControls(waitTime));
+    }
+
+    public void DisableCollider()
+    {
+        
     }
 }

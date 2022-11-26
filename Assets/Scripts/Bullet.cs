@@ -31,4 +31,16 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.tag == "Platform" || col.tag == "Enemy")
+        {
+            Destroy(gameObject);
+            if (col.tag == "Enemy")
+            {
+                col.gameObject.GetComponent<EnemyController>().health.Demage(1);
+            }
+        }
+    }
 }
