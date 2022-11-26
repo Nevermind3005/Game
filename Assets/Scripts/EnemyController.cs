@@ -8,20 +8,27 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform wallCheckPoint;
 
     private Rigidbody2D rb;
+    private Animator animator;
     [HideInInspector] public Health health = new (3);
     
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
         if (health.CurrentHealth == 0)
         {
-            Destroy(gameObject);
+            animator.SetBool("death", true);
         }
+    }
+
+    public void DestroyEnemy()
+    {
+        Destroy(gameObject);
     }
 
     private void FixedUpdate()
@@ -56,9 +63,9 @@ public class EnemyController : MonoBehaviour
         {
             col.gameObject.GetComponent<PlayerBehaviour>().DamagePlayer();
             var dir = col.gameObject.GetComponent<Transform>().rotation.y < 0 ? 1 : -1;
-            col.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2( dir * 22, 7), ForceMode2D.Impulse);
             col.gameObject.GetComponent<CharacterController>().DisablePlayerControls(0.3f);
             col.gameObject.GetComponent<PlayerBehaviour>().DisableEnemyCollision();
+            col.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2( dir * 22, 7), ForceMode2D.Impulse);
         }
     }
 }
