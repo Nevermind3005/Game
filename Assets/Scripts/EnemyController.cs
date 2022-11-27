@@ -51,24 +51,12 @@ public class EnemyController : MonoBehaviour
 
         rb.velocity = new Vector2(moveSpeed * direction, rb.velocity.y);
     }
-
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.gameObject.tag == "Bullet")
-        {
-            Debug.Log("Hit by player");
-        }
-    }
-
+    
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.tag == "Player")
         {
             col.gameObject.GetComponent<PlayerBehaviour>().DamagePlayer();
-            var dir = col.gameObject.GetComponent<Transform>().rotation.y < 0 ? 1 : -1;
-            col.gameObject.GetComponent<CharacterController>().DisablePlayerControls(0.3f);
-            col.gameObject.GetComponent<PlayerBehaviour>().DisableEnemyCollision();
-            col.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2( dir * 22, 7), ForceMode2D.Impulse);
         }
     }
 }

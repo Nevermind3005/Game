@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager gameManager { get; private set; }
+    public static GameManager gameManager { get; set; }
 
     public Health playerHealth = new(3);
     public int coinValue = 0;
