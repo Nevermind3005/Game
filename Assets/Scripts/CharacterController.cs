@@ -221,8 +221,12 @@ public class CharacterController : MonoBehaviour
         StartCoroutine(EnablePlayerControls(waitTime));
     }
 
-    public void DisableCollider()
+    public void Kill()
     {
-        
+        playerInputActions.Player.Disable();
+        playerInputActions.Weapon.Disable();
+        gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+        gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        rb.AddForce(Vector2.up * 20, ForceMode2D.Impulse);
     }
 }
