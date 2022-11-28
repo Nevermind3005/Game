@@ -24,11 +24,8 @@ public class PlayerBehaviour : MonoBehaviour
             KillDontFollow();
             return;
         }
-        var dir = gameObject.GetComponent<Transform>().rotation.y < 0 ? 1 : -1;
-        gameObject.GetComponent<CharacterController>().DisablePlayerControls(0.3f);
-        gameObject.GetComponent<PlayerBehaviour>().DisableEnemyCollision();
-        gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2( dir * 22, 7), ForceMode2D.Impulse);
+
+        gameObject.GetComponent<CharacterController>().Hit();
     }
 
     public void ShowHp()
@@ -59,7 +56,6 @@ public class PlayerBehaviour : MonoBehaviour
     private IEnumerator ReloadSceneWait(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        GameManager.gameManager = null;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
