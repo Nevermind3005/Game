@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,6 +7,8 @@ public class GameManager : MonoBehaviour
 
     public Health playerHealth = new(3);
     public int coinValue = 0;
+
+    public long startTime;
     
     void Awake()
     {
@@ -17,6 +20,12 @@ public class GameManager : MonoBehaviour
         {
             gameManager = this;
         }
+        startTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+    }
+
+    public long GetLevelTime()
+    {
+        return DateTimeOffset.Now.ToUnixTimeSeconds() - startTime;
     }
 
 }

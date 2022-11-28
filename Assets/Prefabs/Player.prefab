@@ -4992,7 +4992,7 @@ MonoBehaviour:
   velPower: 0.9
   friction: 0.2
   dustParticle: {fileID: 8546445362022363768}
-  jumpForce: 13
+  jumpForce: 14
   jumpFallGravity: 1.35
   dashVelocity: 15
   dashTime: 0.2
@@ -5014,6 +5014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpCount: {fileID: 0}
+  virtualCamera: {fileID: 0}
 --- !u!114 &8546445362277449681
 MonoBehaviour:
   m_ObjectHideFlags: 0

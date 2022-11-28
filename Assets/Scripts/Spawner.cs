@@ -23,7 +23,6 @@ public class Spawner : MonoBehaviour
     
     void OnDrawGizmos()
     {
-        // Draw a semitransparent red cube at the transforms position
         Gizmos.color = new Color(1, 0, 0, 0.5f);
         Gizmos.DrawCube(transform.position, transform.localScale);
         Gizmos.color = new Color(0, 1, 0, 1f);

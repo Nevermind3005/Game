@@ -8,9 +8,11 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float direction = 1;
     [SerializeField] private Transform wallCheckPoint;
     [SerializeField] private Light2D headLight;
+    [SerializeField] private AudioClip clip;
 
     private Rigidbody2D rb;
     private Animator animator;
+    private AudioSource audioSource;
     [HideInInspector] public Health health = new (3);
     
 
@@ -18,6 +20,7 @@ public class EnemyController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -42,7 +45,7 @@ public class EnemyController : MonoBehaviour
             if (hit.collider is not null)
             {
                 Debug.Log(hit.collider.tag);
-                if (hit.collider.tag == "Platform")
+                if (hit.collider.tag == "Platform" || hit.collider.tag == "Enemy" || hit.collider.tag == "DroidNav")
                 {
                     transform.Rotate(0f, 180f, 0f);
                     direction *= -1;

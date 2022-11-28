@@ -12,18 +12,16 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void Start()
     {
-        showHp();
+        ShowHp();
     }
 
     public void DamagePlayer()
     {
         GameManager.gameManager.playerHealth.Demage(1);
-        showHp();
+        ShowHp();
         if (GameManager.gameManager.playerHealth.CurrentHealth == 0)
         {
-            gameObject.GetComponent<CharacterController>().Kill();
-            virtualCamera.enabled = false;
-            StartCoroutine(ReloadSceneWait(1.5f));
+            KillDontFollow();
             return;
         }
         var dir = gameObject.GetComponent<Transform>().rotation.y < 0 ? 1 : -1;
@@ -33,7 +31,7 @@ public class PlayerBehaviour : MonoBehaviour
         gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2( dir * 22, 7), ForceMode2D.Impulse);
     }
 
-    private void showHp()
+    public void ShowHp()
     {
         hpCount.text = "HP: " + GameManager.gameManager.playerHealth.CurrentHealth + "/" +
                        GameManager.gameManager.playerHealth.InitialHealth;
@@ -44,7 +42,13 @@ public class PlayerBehaviour : MonoBehaviour
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
         StartCoroutine(EnableEnemyCollision());
     }
-    
+
+    public void KillDontFollow()
+    {
+        gameObject.GetComponent<CharacterController>().Kill();
+        virtualCamera.enabled = false;
+        StartCoroutine(ReloadSceneWait(1.5f));
+    }
 
     private IEnumerator EnableEnemyCollision()
     {
