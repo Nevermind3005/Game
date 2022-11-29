@@ -28,6 +28,10 @@ public class EnemyController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         mainCamera = Camera.main;
         toDestroy = false;
+        if (direction == 1)
+        {
+            transform.Rotate(0f, 180f, 0f);            
+        }
     }
 
     private void Update()
