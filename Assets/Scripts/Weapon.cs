@@ -7,6 +7,11 @@ public class Weapon : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float shootingDelay = 1f;
 
+    [Header("Audio")] 
+    [SerializeField] private AudioClip shootClip;
+
+    private AudioSource audioSource;
+    
     private float lastShotTime = 0f;
 
     private PlayerInputActions playerInputActions;
@@ -17,6 +22,7 @@ public class Weapon : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerInputActions.Weapon.Enable();
         characterController = GetComponent<CharacterController>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -32,5 +38,6 @@ public class Weapon : MonoBehaviour
     void Shoot()
     {
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        audioSource.PlayOneShot(shootClip);
     }
 }

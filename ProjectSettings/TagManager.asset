@@ -8,6 +8,7 @@ TagManager:
   - Platform
   - Enemy
   - Bullet
+  - DroidNav
   layers:
   - Default
   - TransparentFX

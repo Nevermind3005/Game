@@ -8,7 +8,8 @@ public class Bullet : MonoBehaviour
 {
 
     [SerializeField] private float speed = 15f;
-    [FormerlySerializedAs("destroyDistance")] [SerializeField] private float travelDistance = 10f;
+    [FormerlySerializedAs("destroyDistance")] 
+    [SerializeField] private float travelDistance = 10f;
     private Transform firePointPosition;
 
     private Rigidbody2D rb;

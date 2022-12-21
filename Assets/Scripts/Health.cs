@@ -37,5 +37,10 @@ public class Health
             currentHealth = 0;
         }
     }
+
+    public void Kill()
+    {
+        currentHealth = 0;
+    }
     
 }

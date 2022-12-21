@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class OptionsMenu : MonoBehaviour
@@ -10,6 +11,7 @@ public class OptionsMenu : MonoBehaviour
     [SerializeField] private TMPro.TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMPro.TMP_Dropdown graphicsDropdown;
     [SerializeField] private Toggle fsToggle;
+    [SerializeField] private AudioMixer audioMixer;
 
     private Resolution[] resolutions;
     
@@ -53,6 +55,16 @@ public class OptionsMenu : MonoBehaviour
     public void setGraphics(int index)
     {
         QualitySettings.SetQualityLevel(index);
+    }
+
+    public void SetMusicVolume(float val)
+    {
+        audioMixer.SetFloat("MusicVol", val);
+    }
+
+    public void SetSoundVolume(float val)
+    {
+        audioMixer.SetFloat("SoundsVol", val);
     }
     
 }

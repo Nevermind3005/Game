@@ -24,7 +24,13 @@ public class CharacterController : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] private Transform groundCheckPos;
 
+    [Header("Audio")] 
+    [SerializeField] private AudioClip walkClip;
+    [SerializeField] private AudioClip jumpClip;
+    [SerializeField] private AudioClip deathClip;
+    [SerializeField] private AudioClip hitClip;
 
+    private AudioSource audioSource;
     private Rigidbody2D rb;
     private float normalGravity;
     private bool facingRight = true;
@@ -53,6 +59,7 @@ public class CharacterController : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
         normalGravity = rb.gravityScale;
+        audioSource = GetComponent<AudioSource>();
     }
     
     void FixedUpdate()
@@ -151,6 +158,7 @@ public class CharacterController : MonoBehaviour
             canJump = false;
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             animator.SetBool("jumping", true);
+            audioSource.PlayOneShot(jumpClip);
         }
 
         if (!playerInputActions.Player.Jump.IsPressed() && isGrounded)
@@ -174,6 +182,10 @@ public class CharacterController : MonoBehaviour
         if ((horizontalInput > 0.0f || horizontalInput < 0.0f) && isGrounded)
         {
             animator.SetBool("walking", true);
+            if (!audioSource.isPlaying)
+            {
+                audioSource.PlayOneShot(walkClip);
+            }
         }
         else
         {
@@ -228,5 +240,16 @@ public class CharacterController : MonoBehaviour
         gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
         gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         rb.AddForce(Vector2.up * 20, ForceMode2D.Impulse);
+        audioSource.PlayOneShot(deathClip);
+    }
+
+    public void Hit()
+    {
+        var dir = gameObject.GetComponent<Transform>().rotation.y < 0 ? 1 : -1;
+        DisablePlayerControls(0.3f);
+        gameObject.GetComponent<PlayerBehaviour>().DisableEnemyCollision();
+        rb.velocity = Vector2.zero;
+        rb.AddForce(new Vector2( dir * 22, 7), ForceMode2D.Impulse);
+        audioSource.PlayOneShot(hitClip);
     }
 }
