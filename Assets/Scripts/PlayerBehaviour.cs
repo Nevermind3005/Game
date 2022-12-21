@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Cinemachine;
 using TMPro;
@@ -9,6 +10,13 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hpCount;
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    
+    private SpriteRenderer spriteRenderer;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     private void Start()
     {
@@ -37,6 +45,7 @@ public class PlayerBehaviour : MonoBehaviour
     public void DisableEnemyCollision()
     {
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
+        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.g, 0.5f);
         StartCoroutine(EnableEnemyCollision());
     }
 
@@ -49,7 +58,8 @@ public class PlayerBehaviour : MonoBehaviour
 
     private IEnumerator EnableEnemyCollision()
     {
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(1.5f);
+        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.g, 1f);
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), false);
     }
 
